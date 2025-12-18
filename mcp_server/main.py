@@ -8,8 +8,10 @@ from fallback import get_fallback
 app = FastAPI()
 
 class Request(BaseModel):
+    session_id: str
     tech_stack: list[str]
     experience: str
+    answer: str | None = None
 
 @app.post("/generate")
 def generate(req: Request):
@@ -25,3 +27,13 @@ def generate(req: Request):
         "source": "ai",
         "questions": text.split("\n")
     }
+from state import get_state
+
+@app.post("/chat")
+def chat(req: Request):
+    state = get_state(req.session_id)
+
+    if req.answer:
+        state["answers"].append(req.answer)
+
+    # generate next question

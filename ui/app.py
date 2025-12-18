@@ -1,20 +1,21 @@
 import streamlit as st
-from mcp_client.client import fetch_questions
+import uuid
+from client.mcp_client import get_questions
 
-st.title("🤖 Hiring Assistant Chatbot")
+st.title("🤖 TalentScout Hiring Assistant")
 
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+if "session_id" not in st.session_state:
+    st.session_state.session_id = str(uuid.uuid4())
 
-tech = st.text_input("Enter Tech Stack (comma separated)")
-exp = st.selectbox("Experience", ["1-3 years", "3-5 years", "5+ years"])
+st.write("Welcome! I’ll help with initial screening.")
 
-if st.button("Generate Questions"):
-    tech_stack = [t.strip() for t in tech.split(",")]
+tech = st.text_input("Enter your tech stack (comma separated)")
 
-    with st.chat_message("assistant"):
-        with st.spinner("Generating advanced interview questions..."):
-            result = fetch_questions(tech_stack, exp)
+if st.button("Continue"):
+    stack = [t.strip() for t in tech.split(",")]
+
+    with st.spinner("Generating technical questions..."):
+        result = get_questions(st.session_state.session_id, stack)
 
     for q in result["questions"]:
         st.chat_message("assistant").markdown(f"• {q}")

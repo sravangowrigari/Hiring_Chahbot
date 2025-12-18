@@ -1,6 +1,12 @@
 import streamlit as st
 import uuid
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from client.mcp_client import get_questions
+
 
 st.title("🤖 TalentScout Hiring Assistant")
 

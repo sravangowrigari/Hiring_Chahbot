@@ -1,7 +1,9 @@
+streamlit
 fastapi
 uvicorn
-streamlit
-transformers
-torch
 requests
 pydantic
+transformers
+torch
+accelerate
+sentencepiece

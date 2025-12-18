@@ -1,24 +1,24 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from llm import generate_questions
-from validator import is_low_quality
-from fallback import fallback_questions
-from state import get_session
+from .llm import generate_questions
+from .validator import is_low_quality
+from .fallback import get_fallback
 
 app = FastAPI()
 
-class ChatRequest(BaseModel):
+class Request(BaseModel):
     session_id: str
     tech_stack: list[str]
+    experience: str
 
 @app.post("/questions")
-def questions(req: ChatRequest):
-    text = generate_questions(req.tech_stack)
+def questions(req: Request):
+    text = generate_questions(req.tech_stack, req.experience)
 
     if text.strip() == "LOW_CONFIDENCE" or is_low_quality(text):
         return {
             "source": "fallback",
-            "questions": fallback_questions(req.tech_stack)
+            "questions": get_fallback(req.tech_stack)
         }
 
     return {

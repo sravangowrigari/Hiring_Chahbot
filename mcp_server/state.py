@@ -1,8 +1,7 @@
-conversation_state = {}
+sessions = {}
 
-def get_state(session_id):
-    return conversation_state.setdefault(session_id, {
-        "questions": [],
-        "answers": [],
-        "score": 0
+def get_session(session_id):
+    return sessions.setdefault(session_id, {
+        "info": {},
+        "questions": []
     })

@@ -1,12 +1,12 @@
-def is_low_quality(text: str) -> bool:
-    basic_patterns = ["what is", "define", "explain", "list"]
+def is_low_quality(text):
+    bad_starts = ["what is", "define", "explain", "list"]
+    questions = text.split("\n")
 
-    questions = [q for q in text.split("\n") if q.strip()]
     if len(questions) < 3:
         return True
 
     for q in questions:
-        if any(q.lower().startswith(p) for p in basic_patterns):
+        if q.lower().startswith(tuple(bad_starts)):
             return True
 
     return False

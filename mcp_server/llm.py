@@ -1,22 +1,16 @@
 from transformers import pipeline
-from .prompts import SYSTEM_PROMPT
+from prompts import SYSTEM_PROMPT
 
-generator = pipeline(
+llm = pipeline(
     "text-generation",
     model="Qwen/Qwen2.5-7B-Instruct",
-    max_new_tokens=400,
+    max_new_tokens=350,
     temperature=0.7
 )
 
-def generate_questions(tech_stack, experience):
+def generate_questions(tech_stack):
     prompt = f"""
 {SYSTEM_PROMPT}
-
-Candidate Experience: {experience}
 Tech Stack: {", ".join(tech_stack)}
-
-Generate questions:
 """
-
-    response = generator(prompt)[0]["generated_text"]
-    return response
+    return llm(prompt)[0]["generated_text"]
